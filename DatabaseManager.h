@@ -26,6 +26,8 @@ public:
     std::vector<UsageRecord> getUsageRecords();
     
     std::vector<UsageRecord> getOverdueRecords(const std::string& currentDate);
+
+    std::vector<std::string> loadRegions();
 };
 
 #endif
