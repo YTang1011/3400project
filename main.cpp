@@ -4,6 +4,7 @@
 #include "DatabaseManager.h"
 #include "ReportGenerator.h"
 #include "UtilityProviders.h"
+#include <limits>
 
 void printMenu() {
     std::cout << "\n--- Utility Billing System Menu ---\n";
@@ -43,6 +44,12 @@ int main() {
     while (running) {
         printMenu();
         std::cin >> choice;
+        if (std::cin.fail()) {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cout << "Invalid input! Please enter a number.\n";
+        continue;
+        }
         std::cin.ignore(); // Clear newline
 
         switch (choice) {
@@ -62,9 +69,11 @@ int main() {
                 std::getline(std::cin, address);
                 
                 std::cout << "Available Regions:\n";
-                for (const auto& r : defaultRegions) {
-                    std::cout << "- " << r << "\n";
+                auto regions = dbManager.loadRegions(); //load from the database
+                for (const auto& r : regions) {
+                std::cout << "- " << r << "\n";
                 }
+
                 std::cout << "Enter Region (choose from above): ";
                 std::getline(std::cin, region);
                 
