@@ -139,3 +139,22 @@ std::vector<UsageRecord> DatabaseManager::getOverdueRecords(const std::string& c
     sqlite3_finalize(stmt);
     return records;
 }
+
+
+
+std::vector<std::string> DatabaseManager::loadRegions() {
+    std::vector<std::string> regions;
+    std::string query = "SELECT regionName FROM regions;";
+    sqlite3_stmt* stmt;
+
+    if (sqlite3_prepare_v2(db, query.c_str(), -1, &stmt, nullptr) == SQLITE_OK) {
+        while (sqlite3_step(stmt) == SQLITE_ROW) {
+            const unsigned char* text = sqlite3_column_text(stmt, 0);
+            if (text) {
+                regions.push_back(reinterpret_cast<const char*>(text));
+            }
+        }
+    }
+    sqlite3_finalize(stmt);
+    return regions;
+}
