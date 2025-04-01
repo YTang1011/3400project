@@ -118,6 +118,7 @@ int main() {
             case 5: {
                 std::vector<UsageRecord> usageRecords = dbManager.getUsageRecords();
                 reportGen.generateSalesReport(usageRecords);
+                reportGen.exportSalesReport(usageRecords, "sales_report.txt");
                 break;
             }
             case 6: {
@@ -126,6 +127,7 @@ int main() {
                 std::getline(std::cin, currentDate);
                 std::vector<UsageRecord> overdueRecords = dbManager.getOverdueRecords(currentDate);
                 reportGen.generateOverdueReport(overdueRecords);
+                reportGen.exportOverdueReport(overdueRecords, "overdue_report.txt");
                 for (const auto& record : overdueRecords) {
                     sendEmailReminder(record.customerName, record.utilityType);
                 }
